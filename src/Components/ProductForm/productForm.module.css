@@ -1,0 +1,11 @@
+.productFormView {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.formContainer {
+  min-width: 300px;
+  max-width: 400px;
+  width: 80%;
+}

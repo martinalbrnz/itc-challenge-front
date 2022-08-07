@@ -14,9 +14,13 @@ export const getProducts = () => (dispatch) => {
     });
 };
 
-export const createProduct = () => (dispatch) => {
+export const createProduct = (data) => (dispatch) => {
   dispatch(action.createProductPending());
-  fetch(`${process.env.REACT_APP_SERVER_URL}/products`, { method: "POST" })
+  fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data),
+  })
     .then((response) => response.json())
     .then((json) => {
       if (!json.error) {
