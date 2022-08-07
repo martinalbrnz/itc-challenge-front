@@ -8,9 +8,9 @@ const DetailedView = ({ id }) => {
   return (
     <div>
       <img src={product.image_url} alt={product.name} />
-      <div>{product.name}</div>
-      <div>{product.description}</div>
-      <div>{priceFormatter(product.price)}</div>
+      <h5 className="mx-4 my-4">{product.name}</h5>
+      <p className="mx-4 my-4">{product.description}</p>
+      <h6 className="mx-4 my-4">{priceFormatter(product.price)}</h6>
     </div>
   );
 };

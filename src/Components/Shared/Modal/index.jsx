@@ -5,7 +5,14 @@ const Modal = ({ showModal, closeModal, children }) => {
     return (
       <div className={styles.modalBg}>
         <div className={styles.modalContainer}>
-          <p onClick={() => closeModal()}>close</p>
+          <button
+            type="button"
+            onClick={() => closeModal()}
+            className="close"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
           {children}
         </div>
       </div>

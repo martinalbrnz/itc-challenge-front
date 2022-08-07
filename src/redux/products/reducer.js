@@ -25,6 +25,23 @@ const productsReducer = (state = initialState, action) => {
         error: action.payload,
         isFetching: false,
       };
+    case type.CREATE_PRODUCT_PENDING:
+      return {
+        ...state,
+        isFetching: true,
+      }
+    case type.CREATE_PRODUCT_FULFILLED:
+      return {
+        ...state,
+        list: [...state.list, action.payload],
+        isFetching: false,
+      }
+    case type.CREATE_PRODUCT_ERROR:
+      return {
+        ...state,
+        error: Selection.payload,
+        isFetching: false,
+      }
     default:
       return state;
   }
