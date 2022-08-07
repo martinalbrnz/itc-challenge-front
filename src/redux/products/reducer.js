@@ -6,20 +6,20 @@ const initialState = {
   error: "",
 };
 
-const articlesReducer = (state = initialState, action) => {
+const productsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case type.GET_ARTICLES_PENDING:
+    case type.GET_PRODUCTS_PENDING:
       return {
         ...state,
         isFetching: true,
       };
-    case type.GET_ARTICLES_FULFILLED:
+    case type.GET_PRODUCTS_FULFILLED:
       return {
         ...state,
         list: action.payload,
         isFetching: false,
       };
-    case type.GET_ARTICLES_ERROR:
+    case type.GET_PRODUCTS_ERROR:
       return {
         ...state,
         error: action.payload,
@@ -30,4 +30,4 @@ const articlesReducer = (state = initialState, action) => {
   }
 };
 
-export default articlesReducer;
+export default productsReducer;
