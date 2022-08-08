@@ -6,8 +6,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { createProduct } from "../../redux/products/thunks";
 import { getBrands } from "../../redux/brands/thunks";
 import Joi from "joi";
+import { Navigate } from "react-router-dom";
 
 const ProductForm = () => {
+  const auth = useSelector((state) => state.auth.auth).length > 0;
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getBrands());
@@ -26,8 +28,13 @@ const ProductForm = () => {
       "string.empty": "Image URL is a required field",
       "string.uri": "Image URL must be a valid URL",
     }),
-    price: Joi.number().min(0).precision(2).required(),
-    brand: Joi.string().length(24).required(),
+    price: Joi.number().min(0).precision(2).required().messages({
+      "number.base": "Price is a required field",
+      "number.min": "Price should be a positive number",
+    }),
+    brand: Joi.string().length(24).required().messages({
+      "string.empty": "Brand is a required field",
+    }),
   });
   const {
     register,
@@ -37,11 +44,12 @@ const ProductForm = () => {
   } = useForm({ mode: "onBlur", resolver: joiResolver(schema) });
   const submitNewProduct = (data, e) => {
     e.preventDefault();
-    console.log(data);
     dispatch(createProduct(data));
     reset();
   };
-  console.log('errors: ', errors);
+  if (!auth) {
+    return <Navigate to="/" replace />;
+  }
   return (
     <div className={style.productFormView}>
       <div className={style.formContainer}>
@@ -50,6 +58,7 @@ const ProductForm = () => {
           <input
             {...register("name", { required: true })}
             name="name"
+            id="name"
             className="form-control my-2"
             type="text"
             placeholder="Product name"
@@ -59,6 +68,7 @@ const ProductForm = () => {
           <input
             {...register("description", { required: true })}
             name="description"
+            id="description"
             className="form-control my-2"
             type="text"
             placeholder="Product description"
@@ -70,6 +80,7 @@ const ProductForm = () => {
           <input
             {...register("image_url", { required: true })}
             name="image_url"
+            id="image_url"
             className="form-control my-2"
             type="text"
             placeholder="Product image url"
@@ -78,16 +89,29 @@ const ProductForm = () => {
             {errors.image_url?.type && <p>{errors.image_url.message}</p>}
           </div>
           <label htmlFor="brand">Brand</label>
-          <select name="brand" {...register("brand", { required: true })} className="form-control my-2">
-            <option value="" disabled selected>Select a brand</option>
+          <select
+            name="brand"
+            id="brand"
+            {...register("brand", { required: true })}
+            className="form-control my-2"
+          >
+            <option value="" disabled selected>
+              Select a brand
+            </option>
             {brands.map((brand) => {
-              return <option key={brand._id} value={brand._id}>{brand.name}</option>;
+              return (
+                <option key={brand._id} value={brand._id}>
+                  {brand.name}
+                </option>
+              );
             })}
           </select>
+          <div>{errors.brand?.type && <p>{errors.brand.message}</p>}</div>
           <label htmlFor="price">Price</label>
           <input
             {...register("price", { required: true })}
             name="price"
+            id="price"
             className="form-control my-2"
             type="number"
             placeholder="Product price"

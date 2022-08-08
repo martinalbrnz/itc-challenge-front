@@ -16,9 +16,10 @@ export const getProducts = () => (dispatch) => {
 
 export const createProduct = (data) => (dispatch) => {
   dispatch(action.createProductPending());
+  const token = JSON.parse(localStorage.getItem('token'));
   fetch(`${process.env.REACT_APP_SERVER_URL}/products`, {
     method: "POST",
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", token },
     body: JSON.stringify(data),
   })
     .then((response) => response.json())
