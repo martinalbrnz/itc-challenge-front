@@ -24,11 +24,6 @@ const Header = () => {
             </Link>
           </li>
         )}
-        <li className="nav-item">
-          <Link to="about" className="nav-link">
-            ABOUT
-          </Link>
-        </li>
         {auth && (
           <li className="nav-item">
             <Link to="product" className="nav-link">
